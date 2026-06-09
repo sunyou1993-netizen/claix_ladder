@@ -1,0 +1,8 @@
+{
+  "name": "사다리타기",
+  "description": "1080x1920 세로형 키오스크/사이니지 전용 고화질 사다리 타기 게임",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
