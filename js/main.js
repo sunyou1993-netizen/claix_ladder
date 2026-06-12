@@ -34,8 +34,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const playerValEl = document.getElementById('player-count-value');
   const decreaseBtn = document.getElementById('btn-decrease-players');
   const increaseBtn = document.getElementById('btn-increase-players');
-  const resultSelect = document.getElementById('result-select');
-  const btnConfirmSetup = document.getElementById('btn-confirm-setup');
+  const resultValEl = document.getElementById('result-count-value');
+  const decreaseResultsBtn = document.getElementById('btn-decrease-results');
+  const increaseResultsBtn = document.getElementById('btn-increase-results');
   const ladderArea = document.getElementById('ladder-area');
   
   const bottomResetBtn = document.getElementById('bottom-btn-reset');
@@ -50,10 +51,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const topResetBtn = document.getElementById('btn-top-reset');
   const btnHeaderBack = document.getElementById('btn-header-back');
   const btnHeaderClose = document.getElementById('btn-header-close');
-
+ 
   // --- INITIALIZATION ---
   initGame();
-
+ 
   function initGame() {
     updateStateFromInputs();
     generateLadderRungs();
@@ -61,10 +62,10 @@ document.addEventListener('DOMContentLoaded', () => {
     calculatePathMatches();
     setupEventHandlers();
   }
-
+ 
   // --- EVENT HANDLERS ---
   function setupEventHandlers() {
-    // Stepper Handlers
+    // Stepper Handlers for Players
     decreaseBtn.addEventListener('click', () => {
       if (playerCount > 2) {
         playerCount--;
@@ -75,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
         calculatePathMatches();
       }
     });
-
+ 
     increaseBtn.addEventListener('click', () => {
       if (playerCount < 10) {
         playerCount++;
@@ -86,31 +87,33 @@ document.addEventListener('DOMContentLoaded', () => {
         calculatePathMatches();
       }
     });
-
-    // Select dropdown handler
-    resultSelect.addEventListener('change', (e) => {
-      resultCount = parseInt(e.target.value, 10);
+ 
+    // Stepper Handlers for Results
+    if (decreaseResultsBtn) {
+      decreaseResultsBtn.addEventListener('click', () => {
+        if (resultCount > 1) {
+          resultCount--;
+          updateResultsState();
+        }
+      });
+    }
+ 
+    if (increaseResultsBtn) {
+      increaseResultsBtn.addEventListener('click', () => {
+        if (resultCount < playerCount - 1) {
+          resultCount++;
+          updateResultsState();
+        }
+      });
+    }
+ 
+    function updateResultsState() {
+      if (resultValEl) resultValEl.textContent = resultCount;
       autoPopulateResults();
       renderLadderUI();
       calculatePathMatches();
-    });
-
-    // Top Right Card Confirm handler
-    btnConfirmSetup.addEventListener('click', () => {
-      // Create subtle pulsing confirmation visual feedback
-      btnConfirmSetup.classList.add('scale-95');
-      setTimeout(() => {
-        btnConfirmSetup.classList.remove('scale-95');
-        // Let's scroll or highlight the next card section
-        document.getElementById('input-area-card').scrollIntoView({ behavior: 'smooth' });
-      }, 150);
-      
-      // Regenerate fresh ladder on confirmation
-      generateLadderRungs();
-      renderLadderUI();
-      calculatePathMatches();
-    });
-
+    }
+ 
     // Reset All Buttons
     const triggerReset = () => {
       if (tracingInProgress) return;
@@ -144,10 +147,13 @@ document.addEventListener('DOMContentLoaded', () => {
       const inputs = document.querySelectorAll('#ladder-area input');
       let hasBlank = false;
 
-      // Reset previous error classes first
+      // Reset previous error classes and styled properties first
       inputs.forEach(input => {
         input.classList.remove('border-red-500', 'ring-4', 'ring-red-100', 'animate-shake');
         input.style.borderColor = '';
+        input.style.borderWidth = '';
+        input.style.boxShadow = '';
+        input.style.backgroundColor = '';
       });
 
       for (let i = 0; i < playerCount; i++) {
@@ -226,27 +232,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- LOGIC FUNCTIONS ---
   function adjustResultOptions() {
-    // Re-render select box options so results never exceed playerCount
-    resultSelect.innerHTML = '';
-    for (let i = 1; i < playerCount; i++) {
-      const option = document.createElement('option');
-      option.value = i;
-      option.textContent = `${i}개`;
-      if (i === resultCount) {
-        option.selected = true;
-      }
-      resultSelect.appendChild(option);
-    }
     // Handle case where resultCount is now invalid
     if (resultCount >= playerCount) {
       resultCount = playerCount - 1;
       if (resultCount < 1) resultCount = 1;
-      resultSelect.value = resultCount;
     }
+    if (resultValEl) resultValEl.textContent = resultCount;
   }
 
   function updateStateFromInputs() {
     playerValEl.textContent = playerCount;
+    if (resultValEl) resultValEl.textContent = resultCount;
     
     // Scale or fill name lists
     const newNames = [];
@@ -317,8 +313,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const rightMargin = 80;
     const colInterval = (svgWidth - leftMargin - rightMargin) / (playerCount - 1);
     
-    const startY = 60;
-    const endY = 660;
+    const startY = 112;
+    const endY = 708;
 
     const getX = (col) => leftMargin + col * colInterval;
 
@@ -365,7 +361,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function renderLadderUI() {
     // Width and layout spacing constraints
     const svgWidth = 920; 
-    const svgHeight = 720;
+    const svgHeight = 820;
 
     const leftMargin = 80;
     const rightMargin = 80;
@@ -380,7 +376,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Create wrapper absolute overlay with matching height to support precise input alignment
     const inputsOverlay = document.createElement('div');
-    inputsOverlay.className = 'absolute top-0 left-0 w-full h-[720px] pointer-events-none z-10';
+    inputsOverlay.className = 'absolute top-0 left-0 w-full h-[820px] pointer-events-none z-10';
 
     // Adaptively scale pill width and font size to prevent overlapping up to 10 players
     const pillWidth = Math.min(130, Math.floor(colInterval * 0.9));
@@ -396,9 +392,9 @@ document.addEventListener('DOMContentLoaded', () => {
       // Name (Top Input)
       const nameInput = document.createElement('input');
       nameInput.type = 'text';
-      nameInput.className = 'absolute shadow-xs border border-slate-200 focus:border-blue-500 font-semibold text-center rounded-[20px] pointer-events-auto bg-white transition-all text-slate-800 focus:bg-blue-50 focus:scale-105';
+      nameInput.className = 'absolute shadow-xs border border-slate-200 focus:border-blue-500 font-semibold text-center rounded-[28px] pointer-events-auto bg-white transition-all text-slate-800 focus:bg-blue-50 focus:scale-105';
       nameInput.style.width = `${pillWidthPercent}%`;
-      nameInput.style.height = '52px';
+      nameInput.style.height = '104px';
       nameInput.style.fontSize = fontSize;
       nameInput.style.left = `${getXPercent(i)}%`;
       nameInput.style.top = `${getYPercent(60)}%`;
@@ -419,12 +415,12 @@ document.addEventListener('DOMContentLoaded', () => {
       // Result (Bottom Input)
       const resultInput = document.createElement('input');
       resultInput.type = 'text';
-      resultInput.className = 'absolute shadow-xs border border-slate-200 focus:border-blue-500 font-semibold text-center rounded-[20px] pointer-events-auto bg-white transition-all text-slate-800 focus:bg-blue-50 focus:scale-105';
+      resultInput.className = 'absolute shadow-xs border border-slate-200 focus:border-blue-500 font-semibold text-center rounded-[28px] pointer-events-auto bg-white transition-all text-slate-800 focus:bg-blue-50 focus:scale-105';
       resultInput.style.width = `${pillWidthPercent}%`;
-      resultInput.style.height = '52px';
+      resultInput.style.height = '104px';
       resultInput.style.fontSize = fontSize;
       resultInput.style.left = `${getXPercent(i)}%`;
-      resultInput.style.top = `${getYPercent(660)}%`;
+      resultInput.style.top = `${getYPercent(760)}%`;
       resultInput.style.transform = 'translate(-50%, -50%)';
       resultInput.style.padding = `0 ${paddingX}`;
       resultInput.placeholder = '✎';
@@ -446,8 +442,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Create the Main SVG Area
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    svg.setAttribute('class', 'w-full h-[720px] bg-white rounded-2xl');
+    svg.setAttribute('class', 'w-full h-[820px] bg-white rounded-2xl');
     svg.setAttribute('viewBox', `0 0 ${svgWidth} ${svgHeight}`);
+    svg.setAttribute('preserveAspectRatio', 'none');
     svg.style.overflow = 'visible';
 
     // 1. Draw Rungs (Horizontal bridges) grouped together
@@ -462,7 +459,7 @@ document.addEventListener('DOMContentLoaded', () => {
     rungs.forEach(rung => {
       const fromX = getX(rung.fromCol);
       const toX = getX(rung.toCol);
-      const yVal = 60 + rung.level * 600;
+      const yVal = 112 + rung.level * 596;
 
       const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
       line.setAttribute('x1', fromX);
@@ -483,9 +480,9 @@ document.addEventListener('DOMContentLoaded', () => {
       // Vertical Line
       const vLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
       vLine.setAttribute('x1', xVal);
-      vLine.setAttribute('y1', '60');
+      vLine.setAttribute('y1', '112');
       vLine.setAttribute('x2', xVal);
-      vLine.setAttribute('y2', '660');
+      vLine.setAttribute('y2', '708');
       vLine.setAttribute('stroke', '#cbd5e1');
       vLine.setAttribute('stroke-width', '8');
       vLine.setAttribute('stroke-linecap', 'round');
@@ -498,12 +495,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
       svg.appendChild(vLine);
-
-      // Downward path arrows at bottom
-      const arrow = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
-      arrow.setAttribute('points', `${xVal-10},645 ${xVal+10},645 ${xVal},660`);
-      arrow.setAttribute('fill', '#cbd5e1');
-      svg.appendChild(arrow);
     }
 
     // Dynamic traces container so active path lines live on top
@@ -597,12 +588,33 @@ document.addEventListener('DOMContentLoaded', () => {
       svgPath.setAttribute('fill', 'none');
       svgPath.setAttribute('stroke-linecap', 'round');
       svgPath.setAttribute('stroke-linejoin', 'round');
-      svgPath.setAttribute('class', 'path-trace');
       svgPath.style.filter = 'drop-shadow(0px 0px 8px ' + color + '88)';
 
       const group = document.getElementById('trace-group-layers');
       if (group) {
         group.appendChild(svgPath);
+      }
+
+      // Calculate the exact pixel path length dynamically to ensure zero alignment caps/gaps!
+      const totalLength = svgPath.getTotalLength();
+      svgPath.style.strokeDasharray = totalLength;
+      svgPath.style.strokeDashoffset = totalLength;
+
+      // Force synchronous layout reflow trigger
+      svgPath.getBoundingClientRect();
+
+      // Trigger standard CSS hardware-accelerated transition
+      svgPath.style.transition = 'stroke-dashoffset 3.5s cubic-bezier(0.4, 0, 0.2, 1)';
+      svgPath.style.strokeDashoffset = '0';
+
+      // Highlight starting input immediately in the unique line color
+      const inputs = document.querySelectorAll('#ladder-area input');
+      const topInput = inputs[playerIndex];
+      if (topInput) {
+        topInput.style.borderColor = color;
+        topInput.style.borderWidth = '4px';
+        topInput.style.boxShadow = `0 4px 12px ${color}22`;
+        topInput.style.backgroundColor = `${color}06`; // subtle tint
       }
 
       // Track target circles on path head
@@ -613,7 +625,7 @@ document.addEventListener('DOMContentLoaded', () => {
       circle.setAttribute('fill', color);
       if (group) group.appendChild(circle);
 
-      // Animation duration matching style.css (3.5s)
+      // Animation duration (3.5s)
       setTimeout(() => {
         // Highlight destination circle
         const endPoint = points[points.length - 1];
@@ -624,17 +636,17 @@ document.addEventListener('DOMContentLoaded', () => {
         destCircle.setAttribute('fill', color);
         if (group) group.appendChild(destCircle);
 
-        // Highlight input boxes
-        const inputs = document.querySelectorAll('#ladder-area input');
-        const topInput = inputs[playerIndex];
+        // Highlight matching bottom output input box in matching color
         const bottomInput = inputs[playerCount + pathData.destinationCol];
 
-        if (topInput && bottomInput) {
-          topInput.classList.add('bg-blue-50', 'border-blue-400', 'scale-105');
-          bottomInput.classList.add('bg-green-50', 'border-green-400', 'scale-105');
+        if (bottomInput) {
+          bottomInput.style.borderColor = color;
+          bottomInput.style.borderWidth = '4px';
+          bottomInput.style.boxShadow = `0 4px 12px ${color}22`;
+          bottomInput.style.backgroundColor = `${color}06`; // subtle tint
+          bottomInput.classList.add('scale-105');
           
           setTimeout(() => {
-            topInput.classList.remove('scale-105');
             bottomInput.classList.remove('scale-105');
           }, 300);
         }
@@ -662,7 +674,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <span class="w-[16px] h-[16px] rounded-full inline-block" style="background-color: ${color}"></span>
             <span class="text-[32px] font-bold text-zinc-700">${pName}</span>
           </div>
-          <div class="text-[44px] font-black text-rose-500 bg-white py-4 rounded-2xl border border-dashed border-rose-200 shadow-sm">
+          <div class="text-[44px] font-black py-4 rounded-2xl border-2 border-dashed shadow-sm transition-all" style="color: ${color}; border-color: ${color}cc; background-color: ${color}08;">
             ${resVal}
           </div>
         </div>

@@ -39,7 +39,7 @@ body {
 /* Header style - exact specs */
 .signage-header {
   height: 120px;
-  padding: 0 48px;
+  padding: 0 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -94,10 +94,10 @@ body {
 /* Core Layout Margins */
 .main-content {
   flex: 1;
-  padding: 24px 48px 0 48px; /* 48px left/right margins */
+  padding: 12px 24px 0 24px; /* Reduced by half (exactly two-times smaller) */
   display: flex;
   flex-direction: column;
-  gap: 24px; /* Card gap is 24px */
+  gap: 12px; /* Card gap reduced by half */
   overflow: hidden;
 }
 
@@ -106,8 +106,8 @@ body {
   background-color: #ffffff;
   border-radius: 32px; /* Card radius 32px */
   padding: 32px; /* Inner padding 32px */
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.03), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
-  border: 1px solid rgba(0, 108, 255, 0.04);
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.08), 0 10px 20px -8px rgba(0, 0, 0, 0.04);
+  border: 1.5px solid rgba(0, 108, 255, 0.12);
   position: relative;
   overflow: hidden;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -116,7 +116,7 @@ body {
 /* Bottom CTA container - exact heights and specs */
 .bottom-cta-container {
   height: 240px; /* Exact height 240px */
-  margin: 24px 48px 48px 48px; /* 48px bottom margin */
+  margin: 12px 24px 24px 24px; /* Reduced by half (exactly two-times smaller) */
   display: flex;
   gap: 20px; /* Button gap 20px */
   z-index: 10;
@@ -165,7 +165,7 @@ body {
 /* Ladder styling components */
 .ladder-svg {
   width: 100%;
-  height: 720px; 
+  height: 820px; 
   background-color: #ffffff;
 }
 

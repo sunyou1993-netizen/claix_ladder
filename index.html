@@ -14,19 +14,9 @@
       <!-- 120px Height Header -->
       <header class="signage-header">
         <div class="flex items-center gap-[24px] justify-start flex-1">
-          <div id="btn-header-back" class="back-button">
-            <!-- Elegant 52px back icon -->
-            <svg xmlns="http://www.w3.org/2000/svg" width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#1e293b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="15 18 9 12 15 6"></polyline>
-            </svg>
-          </div>
           <div class="header-title">사다리 타기</div>
         </div>
         <button id="btn-header-close" class="close-button font-semibold">
-          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="inline-block mr-[8px]" style="transform: translateY(-1px);">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
           닫기
         </button>
       </header>
@@ -38,18 +28,18 @@
         <div id="setup-card" class="signage-card h-[380px] flex flex-col justify-between relative">
           <div class="flex justify-between items-start">
             <div class="flex flex-col gap-[8px]">
-              <h1 class="text-[44px] font-bold text-zinc-900 tracking-tight leading-tight">사다리타기</h1>
+              <h1 class="text-[40px] font-bold text-zinc-900 tracking-tight leading-tight">사다리 타기 인원 설정</h1>
               <p class="text-[26px] text-zinc-500 font-medium">참여 인원 수를 설정해보세요.<br><span class="text-blue-500 font-semibold">(최대 10명까지 참여할 수 있어요!)</span></p>
             </div>
-            <!-- Character Bear Illustration placed absolutely on the gray form below with zero gap and no movement -->
-            <div class="absolute right-[48px] bottom-[140px] w-[270px] h-[225px] z-0">
+            <!-- Character Bear Illustration placed absolutely with increased size and stuck to the bottom with negative bottom offset -->
+            <div class="absolute right-[40px] bottom-[-32px] w-[424px] h-[353px] z-0">
               <img src="/src/assets/images/image23.png" alt="3D Bear" class="w-full h-full object-contain" referrerPolicy="no-referrer" />
             </div>
           </div>
 
-          <!-- Bottom Control Form inside Card 1 -->
-          <div class="bg-slate-50 rounded-2xl p-[18px] flex items-center justify-between border border-slate-100 relative z-20">
-            <!-- Stepper Container -->
+          <!-- Bottom Control Form inside Card 1 (Wraps only Player Stepper, aligned to the left matching the text start) -->
+          <div class="bg-slate-50 rounded-2xl py-[16px] px-[32px] flex items-center gap-[24px] border border-slate-100 relative z-20 w-fit ml-0 mr-auto shadow-2xs">
+            <!-- Stepper Container for Players -->
             <div class="flex items-center gap-[24px]">
               <span class="text-[28px] font-bold text-slate-700">참가자 수</span>
               <div class="flex items-center gap-[16px] bg-white border border-slate-200 rounded-full px-[12px] py-[6px] shadow-2xs">
@@ -58,45 +48,24 @@
                 <button id="btn-increase-players" class="stepper-btn font-extrabold text-slate-600">+</button>
               </div>
             </div>
-
-            <!-- Select element -->
-            <div class="flex items-center gap-[20px]">
-              <span class="text-[28px] font-bold text-slate-700">결과 수</span>
-              <div class="relative flex items-center">
-                <select id="result-select" class="appearance-none bg-white border border-slate-200 text-[28px] font-bold text-slate-800 rounded-2xl pl-[24px] pr-[64px] py-[12px] shadow-2xs focus:border-blue-500 focus:outline-none cursor-pointer">
-                  <option value="1">1개</option>
-                  <option value="2">2개</option>
-                  <option value="3">3개</option>
-                  <option value="4">4개</option>
-                </select>
-                <!-- Custom dropdown SVG icon with 40px size -->
-                <div class="absolute right-[16px] pointer-events-none flex items-center justify-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="6 9 12 15 18 9"></polyline>
-                  </svg>
-                </div>
-              </div>
-            </div>
-
-            <button id="btn-confirm-setup" class="bg-blue-600 hover:bg-blue-700 active:scale-95 text-white text-[28px] font-bold px-[36px] py-[16px] rounded-2xl cursor-pointer shadow-md transition-all">
-              확인
-            </button>
           </div>
         </div>
 
         <!-- Card 2: Interactive Input & Ladder Stage (Radius 32px, Padding 32px) -->
-        <div id="input-area-card" class="signage-card flex-1 flex flex-col justify-between">
+        <div id="input-area-card" class="signage-card flex-1 flex flex-col justify-between pb-[64px]">
           
           <!-- Section Heading and resets (Restyled to keep heading clean and center) -->
           <div class="flex justify-between items-center mb-[12px]">
-            <span class="text-[36px] font-extrabold text-zinc-900">사다리 입력</span>
+            <span class="text-[40px] font-bold text-zinc-900">사다리 입력</span>
           </div>
 
           <!-- Notification Tip block inside Card 2 -->
           <div class="bg-[#EDF5FF] rounded-2xl p-[24px] flex items-center gap-[20px] border border-blue-100">
             <div class="w-[64px] h-[64px] bg-blue-500 rounded-full flex items-center justify-center text-white shrink-0 shadow-md">
               <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="16" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12.01" y2="8"></line>
               </svg>
             </div>
             <p class="text-[23px] text-zinc-700 font-medium leading-[1.4] tracking-tight">
@@ -106,14 +75,8 @@
           </div>
 
           <!-- The Physical Canvas Area - Dynamic Render Stage from /js/main.js -->
-          <div id="ladder-area" class="relative flex-1 w-full my-[24px] flex flex-col justify-between">
+          <div id="ladder-area" class="relative flex-1 w-full mt-[56px] mb-[12px] flex flex-col justify-between">
             <!-- Appended automatically via engine -->
-          </div>
-
-          <!-- Footer alert inside Card 2 (increased margin bottom to 48px to match side layout margin) -->
-          <div class="bg-slate-50 rounded-2xl py-[16px] px-[24px] flex items-center justify-center gap-[12px] border border-slate-100 mb-[48px]">
-            <span class="bg-blue-100 text-blue-700 text-[18px] font-bold px-[12px] py-[4px] rounded-md uppercase">TIP</span>
-            <p class="text-[20px] text-zinc-500 font-medium">칸을 터치하면 이름을 변경하거나 결과를 원하는 텍스트로 자유롭게 쓸 수 있어요.</p>
           </div>
           
         </div>
